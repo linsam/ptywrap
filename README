@@ -1,0 +1,11 @@
+My own pty wrapper. Intended for use in execline scripts. Mostly intended for
+s6 services when launching a daemon that logs to stdout instead of stderror
+and doesn't change its stdout to line-buffering.
+
+Should work similar to DJB's getpty or ptyget or whatever it was called.
+
+That utility was only licensed for unmodified redistribution, so I didn't look
+at the source code.
+
+This is intended to be GPL or BSD or something redistributable (I haven't
+decided yet)
