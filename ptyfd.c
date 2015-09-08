@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     printf("Got fd %i, referencing '%s'\n", mfd, name);
     grantpt(mfd);
     unlockpt(mfd);
-    sfd = open(name, O_RDWR);
+    sfd = open(name, O_RDWR | O_NOCTTY);
     printf("SFD: %i\n", sfd);
     execvp(argv[1], &argv[1]);
     /* If the exec failed, return an error */
