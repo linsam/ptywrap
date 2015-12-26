@@ -2,11 +2,11 @@
  * Wrap execution of a program inside a pty, copying the pty line data to
  * stdout.
  *
- * ptyer is useful as a general utility, but doesn't help on its own when
+ * ptyfd may be useful as a general utility, but doesn't help on its own when
  * running a daemon via an auto-logging supervisor. This is because the
  * service scanner creates a pipe and then two supervisors (one for the
  * service itself and another for the logger) which are connected via that
- * pipe. By the time ptyer would be run to create the pty, the pty's FD
+ * pipe. By the time ptyfd would be run to create the pty, the pty's FD
  * cannot be used to pass to the logger. One would need to launch a data
  * copier like 'cat' or 'dd' to connect the pty to the pipe to the logger,
  * which would make ps listings confusing to some people.
@@ -15,15 +15,15 @@
  * name in ps listings (especially when viewed in a tree/forest view).
  *
  * This utility has the additional functionality of emulating a standard
- * 80x24 terminal size (TODO). This allows programs to query the size
+ * 80x24 terminal size. This allows programs to query the size
  * either via standard TTY requests *or* by sending one of the ANSI
- * sequences. While probably rarely useful for daemons, it would be useful
+ * sequences (TODO). While probably rarely useful for daemons, it would be useful
  * for running pagers or editors (like busybox vi) from a shared serial
  * port (where having multiple clients respond to the size request has
  * horrifying results).
  *
  * Caveats: The program input will still be from the original stream. Some
- * programs, like stty, use the inpput stream instead of the output stream
+ * programs, like stty, use the input stream instead of the output stream
  * for the terminal configuration.
  */
 
