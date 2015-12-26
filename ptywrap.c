@@ -89,8 +89,14 @@ int main(int argc, char **argv)
             break;
         }
     }
-    waitpid(client, NULL, 0);
-    return 0;
+    int status;
+    waitpid(client, &status, WEXITED);
+    if (WIFEXITED(status)) {
+        return WEXITSTATUS(status);
+    } else if (WIFSIGNALED(status)) {
+        raise(WTERMSIG(status));
+    }
+    return 1;
 }
 
 int child(const char *name, int argc, char **argv)
