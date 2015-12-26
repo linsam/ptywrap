@@ -35,6 +35,10 @@
 #include <errno.h>
 #include <time.h>
 #include <sys/wait.h>
+#if defined(__linux__)
+#include <sys/ioctl.h>
+#endif
+
 
 static int
 child(const char *name, int argc, char **argv);
@@ -54,6 +58,13 @@ int main(int argc, char **argv)
     }
     grantpt(mfd);
     unlockpt(mfd);
+#if defined(__linux__)
+    struct winsize winsize = {
+        .ws_row = 24,
+        .ws_col = 80,
+    };
+    ioctl(mfd, TIOCSWINSZ, &winsize);
+#endif
     client = fork();
     if (client == -1) {
         fprintf(stderr, "Failed to fork\n");
