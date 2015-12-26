@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <errno.h>
 #include <time.h>
 #include <sys/wait.h>
 
@@ -44,10 +45,13 @@ int main(int argc, char **argv)
     /* TODO: Check for errors */
     char name[50] = "";
     int mfd; /* master terminal fd */
+    int debug = 0;
     pid_t client;
     mfd = posix_openpt(O_NOCTTY | O_RDWR);
     ptsname_r(mfd, name, sizeof(name));
-    printf("Got fd %i, referencing '%s'\n", mfd, name);
+    if (debug) {
+        fprintf(stderr, "Got fd %i, referencing '%s'\n", mfd, name);
+    }
     grantpt(mfd);
     unlockpt(mfd);
     client = fork();
@@ -71,7 +75,14 @@ int main(int argc, char **argv)
         if (count > 0) {
             write(1, buf, count);
         } else if (count == 0) {
-            printf("done\n");
+            if (debug) {
+                fprintf(stderr, "done\n");
+            }
+            break;
+        } else if (errno == EIO) {
+            if (debug) {
+                fprintf(stderr, "pty closed; done\n");
+            }
             break;
         } else {
             perror("whoops");
