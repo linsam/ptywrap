@@ -1,4 +1,5 @@
-===== Introduction =====
+Introduction
+============
 
 My own pty wrapper. Intended for use in execline scripts. Mostly intended for
 s6 services when launching a daemon that logs to stdout instead of stderror
@@ -12,7 +13,8 @@ at the source code.
 This is intended to be GPL or BSD or something redistributable (I haven't
 decided yet)
 
-===== Building / Installation =====
+Building / Installation
+=======================
 
 This utility is very simple, requiring no libraries and hopefully no options to build.
 
@@ -22,7 +24,8 @@ wherever you want.
 Depending on your system, you may need to tell the compiler to use C99 instead
 of C89. See your tool's documentation for instructions on how to do this.
 
-===== Usage =====
+Usage
+=====
 
 This program doesn't currently take any options. The first argument is the
 name of a program to run, which may be by path or will be found by searching
@@ -43,7 +46,8 @@ should probably be the last thing just before the final program in an execline
 script (that is, run it after dropping privileges and changing users and
 such).
 
-===== Compatibility =====
+Compatibility
+=============
 
 This utility should work on most POSIX systems, though currently the setting
 of the terminal size attributes is via Linux specific ioctl, and that part
